@@ -1,0 +1,74 @@
+{
+  "generated_at": "2026-09-14T00:00:00+05:30",
+  "record_count": 6,
+  "sources_attempted": ["Indeed", "LinkedIn", "Cognizant Careers", "YASH Technologies", "Techila Global Services", "ZipRecruiter India"],
+  "errors": [],
+  "jobs": [
+    {
+      "id": "eb71a9dee2e91bae",
+      "title": "Azure Databricks Data Engineer",
+      "company": "Techila Global Services",
+      "location": "India / Pan India",
+      "date": "2026-09-12",
+      "url": "https://in.indeed.com/viewjob?jk=eb71a9dee2e91bae",
+      "description": "Hybrid Pan India, 4–7 years. Azure Databricks, Azure Data Factory, ADLS Gen2, PySpark, Spark SQL, Delta Lake, SQL Server, Azure DevOps, Unity Catalog and Power BI.",
+      "tags": ["Azure Databricks", "Azure Data Factory", "ADLS Gen2", "PySpark", "Delta Lake", "SQL"],
+      "source": "Indeed"
+    },
+    {
+      "id": "6a8bf9bcf58b534281363873",
+      "title": "Azure Databricks Data Engineer",
+      "company": "Techila Global Services",
+      "location": "Pan India",
+      "date": "2026-09-12",
+      "url": "https://techilaservices.com/careers/6a8bf9bcf58b534281363873",
+      "description": "Azure Databricks Data Engineer, 4–7 years. Azure Databricks, Azure Data Factory, ADLS Gen2, PySpark, Spark SQL, Delta Lake and Lakehouse architecture.",
+      "tags": ["Azure Databricks", "ADF", "ADLS Gen2", "PySpark", "Delta Lake"],
+      "source": "Techila Global Services"
+    },
+    {
+      "id": "65920",
+      "title": "Sr. Software Engineer - Azure Databricks",
+      "company": "YASH Technologies",
+      "location": "Hyderabad / Pune / Indore / Bengaluru, India",
+      "date": "2026-09-11",
+      "url": "https://careers.yash.com/job/Hyderabad-Sr_-Software-Engineer-Azure-Databricks-Job-TG/1366985966/",
+      "description": "Azure AI Data Engineer / Databricks role for 3–6 years with Azure Databricks, PySpark, Azure Data Factory, Delta Lake and scalable data pipelines.",
+      "tags": ["Azure Databricks", "PySpark", "ADF", "Delta Lake"],
+      "source": "YASH Technologies"
+    },
+    {
+      "id": "66256",
+      "title": "Sr. Software Engineer - Azure Databricks",
+      "company": "YASH Technologies",
+      "location": "Hyderabad, Telangana, India",
+      "date": "2026-09-07",
+      "url": "https://in.indeed.com/viewjob?jk=7168c05f3614574c",
+      "description": "Senior Software Engineer / Azure Data Engineer / Databricks Engineer, 5+ years. Azure Databricks, PySpark, ADF, Delta Lake and ETL/ELT.",
+      "tags": ["Azure Data Engineer", "Databricks", "PySpark", "ADF"],
+      "source": "Indeed"
+    },
+    {
+      "id": "00068539073",
+      "title": "Azure Data Engineer",
+      "company": "Cognizant",
+      "location": "Hyderabad, India",
+      "date": "2026-08-13",
+      "url": "https://careers.cognizant.com/india-en/jobs/00068539073/azure-data-engineer/",
+      "description": "Azure Data Engineer, 5+ years. Strong SQL, Python, Azure Data Lake, Azure Synapse Analytics, Azure Data Factory and PySpark. Hybrid Hyderabad.",
+      "tags": ["Azure Data Engineer", "Azure Data Lake", "Synapse", "ADF", "PySpark", "SQL"],
+      "source": "Cognizant Careers"
+    },
+    {
+      "id": "365_594563_25-03047",
+      "title": "Azure Data Bricks, Data Engineer",
+      "company": "ClifyX",
+      "location": "Bengaluru, Karnataka, India",
+      "date": "2026-09-10",
+      "url": "https://www.ziprecruiter.in/jobs/594249309-azure-data-bricks-data-engineer-at-clifyx",
+      "description": "Azure Databricks Data Engineer, 5+ years. Python, Spark programming, Azure Databricks workflows, CI/CD, GitHub and data warehouse/data mart architecture.",
+      "tags": ["Azure Databricks", "Python", "Spark", "CI/CD", "Data Warehouse"],
+      "source": "ZipRecruiter India"
+    }
+  ]
+}
