@@ -1,2 +1,2 @@
 Trigger GitHub Pages to publish the latest main-branch content.
-Strict Azure Data Engineer filter and original source links deployed in jobs/index.html.
+Expanded Azure data-engineering coverage and India-eligible remote jobs deployed in jobs/index.html.
