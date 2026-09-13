@@ -1,1 +1,2 @@
 Trigger GitHub Pages to publish the latest main-branch content.
+India filter fix deployed in jobs/index.html.
