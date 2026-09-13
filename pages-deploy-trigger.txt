@@ -1,2 +1,2 @@
 Trigger GitHub Pages to publish the latest main-branch content.
-India filter fix deployed in jobs/index.html.
+Strict Azure Data Engineer filter and original source links deployed in jobs/index.html.
