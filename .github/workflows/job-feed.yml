@@ -34,16 +34,22 @@ jobs:
           import urllib.request
           from datetime import datetime, timezone
 
-          UA = 'GaganKaira-AzureJobs/1.0 (+https://gagankaira.github.io/jobs/)'
+          UA = 'GaganKaira-AzureJobs/1.1 (+https://gagankaira.github.io/jobs/)'
           tags = [
               'Azure Data Engineer', 'Senior Azure Data Engineer', 'Data Engineer',
               'Azure Databricks', 'Databricks', 'Azure Data Factory', 'Azure Synapse',
               'PySpark', 'Spark Data Engineer', 'Data Platform Engineer', 'Big Data Engineer'
           ]
-          relevance = re.compile(
-              r'azure|data engineer|data engineering|databricks|data factory|adf|synapse|pyspark|spark|delta lake|adls|data lake|lakehouse|data platform|data pipeline|etl|elt',
+          azure_signal = re.compile(
+              r'azure|microsoft azure|azure data factory|\badf\b|azure databricks|\bdatabricks\b|azure synapse|\bsynapse\b|\badls\b|azure data lake|microsoft fabric',
               re.I,
           )
+          data_role = re.compile(
+              r'data engineer|data engineering|data platform|data pipeline|big data|analytics engineer|etl',
+              re.I,
+          )
+          aws_only_title = re.compile(r'\baws\b|amazon web services', re.I)
+          azure_title = re.compile(r'azure|adf|databricks|synapse|adls|microsoft fabric', re.I)
 
           def get(url):
               req = urllib.request.Request(url, headers={'User-Agent': UA, 'Accept': 'application/json'})
@@ -61,17 +67,17 @@ jobs:
               tags = raw.get('tags') or []
               if not isinstance(tags, list):
                   tags = [str(tags)]
-              return {
-                  'id': job_id,
-                  'title': title,
-                  'company': company,
-                  'location': location,
-                  'date': date,
-                  'url': url,
-                  'description': description,
-                  'tags': tags,
-                  'source': source,
-              }
+              return {'id':job_id,'title':title,'company':company,'location':location,'date':date,'url':url,'description':description,'tags':tags,'source':source}
+
+          def azure_match(j):
+              hay = ' '.join([j['title'], j['company'], j['location'], j['description'], ' '.join(j['tags'])])
+              title = j['title']
+              # Keep Azure/multi-cloud data roles, but reject AWS-only job titles.
+              if not data_role.search(hay) or not azure_signal.search(hay):
+                  return False
+              if aws_only_title.search(title) and not azure_title.search(title):
+                  return False
+              return True
 
           jobs = []
           errors = []
@@ -82,9 +88,7 @@ jobs:
                   payload = get('https://jobicy.com/api/v2/remote-jobs?' + q)
                   for raw in payload.get('jobs', []):
                       j = norm(raw, 'Jobicy')
-                      hay = ' '.join([j['title'], j['company'], j['location'], j['description'], ' '.join(j['tags'])])
-                      if relevance.search(hay):
-                          jobs.append(j)
+                      if azure_match(j): jobs.append(j)
               except Exception as exc:
                   errors.append('Jobicy:' + tag + ':' + str(exc))
 
@@ -92,21 +96,16 @@ jobs:
               payload = get('https://remotive.com/api/remote-jobs?limit=200')
               for raw in payload.get('jobs', []):
                   j = norm(raw, 'Remotive')
-                  hay = ' '.join([j['title'], j['company'], j['location'], j['description'], ' '.join(j['tags'])])
-                  if relevance.search(hay):
-                      jobs.append(j)
+                  if azure_match(j): jobs.append(j)
           except Exception as exc:
               errors.append('Remotive:' + str(exc))
 
           try:
               payload = get('https://remoteok.com/api')
               for raw in payload if isinstance(payload, list) else []:
-                  if not raw.get('position'):
-                      continue
+                  if not raw.get('position'): continue
                   j = norm(raw, 'Remote OK')
-                  hay = ' '.join([j['title'], j['company'], j['location'], j['description'], ' '.join(j['tags'])])
-                  if relevance.search(hay):
-                      jobs.append(j)
+                  if azure_match(j): jobs.append(j)
           except Exception as exc:
               errors.append('Remote OK:' + str(exc))
 
@@ -114,33 +113,16 @@ jobs:
               payload = get('https://www.arbeitnow.com/api/job-board-api')
               rows = payload if isinstance(payload, list) else payload.get('data') or payload.get('jobs') or []
               for raw in rows:
-                  raw = {
-                      'id': raw.get('slug') or raw.get('id'),
-                      'title': raw.get('title'),
-                      'company_name': raw.get('company_name') or raw.get('company'),
-                      'location': raw.get('location') or 'Remote',
-                      'url': raw.get('url'),
-                      'date': raw.get('created_at') or raw.get('date'),
-                      'description': raw.get('description'),
-                      'tags': raw.get('tags') or [],
-                  }
+                  raw = {'id':raw.get('slug') or raw.get('id'),'title':raw.get('title'),'company_name':raw.get('company_name') or raw.get('company'),'location':raw.get('location') or 'Remote','url':raw.get('url'),'date':raw.get('created_at') or raw.get('date'),'description':raw.get('description'),'tags':raw.get('tags') or []}
                   j = norm(raw, 'Arbeitnow')
-                  hay = ' '.join([j['title'], j['company'], j['location'], j['description'], ' '.join(j['tags'])])
-                  if relevance.search(hay):
-                      jobs.append(j)
+                  if azure_match(j): jobs.append(j)
           except Exception as exc:
               errors.append('Arbeitnow:' + str(exc))
 
           # Intentionally DO NOT deduplicate. Multiple source records are separate application paths.
-          output = {
-              'generated_at': datetime.now(timezone.utc).isoformat(),
-              'record_count': len(jobs),
-              'sources_attempted': ['Jobicy', 'Remotive', 'Remote OK', 'Arbeitnow'],
-              'errors': errors,
-              'jobs': jobs,
-          }
-          with open('data/jobs.json', 'w', encoding='utf-8') as f:
-              json.dump(output, f, ensure_ascii=False, separators=(',', ':'))
+          output = {'generated_at':datetime.now(timezone.utc).isoformat(),'record_count':len(jobs),'sources_attempted':['Jobicy','Remotive','Remote OK','Arbeitnow'],'errors':errors,'jobs':jobs}
+          with open('data/jobs.json','w',encoding='utf-8') as f:
+              json.dump(output,f,ensure_ascii=False,separators=(',',':'))
           PY
 
       - name: Publish refreshed feed
