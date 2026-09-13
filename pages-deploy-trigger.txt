@@ -1,2 +1,2 @@
 Trigger GitHub Pages to publish the latest main-branch content.
-Expanded Azure data-engineering coverage and India-eligible remote jobs deployed in jobs/index.html.
+Added LinkedIn, Naukri, Glassdoor, Indeed, Foundit, TimesJobs, Shine, Wellfound and Cutshort search coverage.
